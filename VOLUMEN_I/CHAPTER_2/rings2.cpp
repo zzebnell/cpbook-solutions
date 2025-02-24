@@ -19,7 +19,7 @@ int main() {
 
   int n, m;
   cin >> n >> m;
-  vector<string> v(n, string('?', m));
+  vector<string> v(n, string(m, '?'));
   vector<vector<int>> eq(n + 2, vector<int>(m + 2));
   //int eq[n + 2][m + 2];
   //memset(eq, 0, sizeof eq);
@@ -35,14 +35,22 @@ int main() {
   set<int> st;
   st.insert(0);
   int x = 1;
-  for (int v = 0; v < 1000; v++) {
+  auto is_valid = [&](int x, int y) {
+    return (x >= 0 && x < n + 2 && y >= 0 && y < m + 2);
+  };
+  for (int v = 0; v < 500; v++) {
     for (int i = 1; i <= n; i++) {
       for (int j = 1; j <= m; j++) {
         if (eq[i][j] == INF) {
           for (int k = 0; k < 4; k++) {
-            if (st.count(eq[i + dx[k]][j + dy[k]])) {
-              eq[i][j] = x;
+            int xx = i + dx[k];
+            int yy = j + dy[k];
+            if (is_valid(xx, yy)) {
+              if (st.count(eq[xx][yy])) {
+                eq[i][j] = x;
+              }
             }
+            
           }
         }
       }
